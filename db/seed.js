@@ -38,8 +38,7 @@ async function seed() {
   await Promise.all(videos.map(video =>
     db.table('videos').insert(video).returning('id')
   ))
-  console.log('done')
-  process.exit(0)
+  console.log('Done: seed!')
 }
 
 module.exports = seed

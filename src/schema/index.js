@@ -1,5 +1,7 @@
 const { makeExecutableSchema } = require('graphql-tools')
+const isLength = require('validator/lib/isLength')
 const db = require('../db')
+const { hash, compare } =  require('../utils')
 const { userSchema } = require('./user')
 const { postSchema, postResolvers } = require('./post')
 const { videoSchema, videoResolvers } = require('./video')
@@ -15,6 +17,11 @@ type Query {
   videosCount: Int!
   userPosts(id: Int!): [Post]
   userVideos(id: Int!): [Video]
+}
+
+type Mutation {
+  register(username: String!, password: String!, email: String): User
+  login(username: String!, password: String!): User
 }
 `]
 
@@ -51,6 +58,37 @@ const rootResolvers = {
     },
     userPosts: (_, { id }, { userPosts }) => userPosts.load(id),
     userVideos: (_, { id }, { userVideos }) => userVideos.load(id)
+  },
+  Mutation: {
+    register: async(_, args, { user }) => {
+      const { username, password } = args
+      if (!isLength(username, { min: 4, max: 20 })){
+        throw new Error(`username's length should in 4 ~ 20`)
+      }
+      if (!isLength(password, { min: 6, max: 20 })){
+        throw new Error(`password's length should in 6 ~ 20`)
+      }
+      try {
+        args.password = await hash(args.password)
+      } catch (err) {
+        throw err
+      }
+      const id = await db.table('users').insert(args).returning('id')
+      return user.load(id[0])
+    },
+    login: async(_, { username, password }) => {
+      const user = await db.table('users')
+        .where('username', username)
+        .select('*')
+      if (user.length === 0) {
+        throw new Error(`user not exists!`)
+      }
+      const res = await compare(password, user[0].password)
+      if (!res) {
+        throw new Error(`password not match!`)
+      }
+      return user[0]
+    }
   }
 }
 

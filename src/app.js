@@ -7,6 +7,7 @@ const { graphqlKoa, graphiqlKoa } = require('graphql-server-koa')
 const schema = require('./schema')
 const { user, post, video, userPosts, userVideos } = require('./dataloader')
 
+const ENV = process.env.NODE_ENV
 const app = new Koa()
 const router = new Router()
 
@@ -25,7 +26,10 @@ router.post('/graphql', graphqlKoa({
     userVideos
   }
 }))
-router.get('/graphql', graphiqlKoa({ endpointURL: '/graphql' }))
+
+if (ENV !== 'prod') {
+  router.get('/graphql', graphiqlKoa({ endpointURL: '/graphql' }))
+}
 
 app.use(router.routes())
 app.use(router.allowedMethods())

@@ -31,16 +31,14 @@ async function up() {
     t.timestamps()
     t.unique('title')
   })
-  console.log('done')
-  process.exit(0)
+  console.log('Done: up!')
 }
 
 async function down() {
   await db.schema.dropTableIfExists('users')
   await db.schema.dropTableIfExists('posts')
   await db.schema.dropTableIfExists('videos')
-  console.log('done')
-  process.exit(0)
+  console.log('Done: down!')
 }
 
 module.exports = {

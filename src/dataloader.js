@@ -46,9 +46,9 @@ const userPosts = new Dataloader(ids => db.table('posts')
 )
 
 const userVideos = new Dataloader(ids => db.table('videos')
-.whereIn('author_id', ids)
-.select('*')
-.then(mapToMany(ids, x => x.author_id, 'Video'))
+  .whereIn('author_id', ids)
+  .select('*')
+  .then(mapToMany(ids, x => x.author_id, 'Video'))
 )
 
 module.exports = {
