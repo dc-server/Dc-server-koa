@@ -1,7 +1,7 @@
 const db = require('../src/db')
 
 function up() {
-  db.schema.createTable('users', t => {
+  return db.schema.createTable('users', t => {
     t.increments('id').primary()
     t.string('username', 100).notNullable()
     t.string('password', 100).notNullable()
@@ -23,17 +23,19 @@ function up() {
         t.unique('title')
       })
     })
-  // await db.schema.createTable('videos', t => {
-  //   t.increments('id').primary()
-  //   t.string('title', 200).notNullable()
-  //   t.text('description')
-  //   t.string('link').notNullable()
-  //   t.integer('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
-  //   t.integer('status').defaultTo(1)
-  //   t.timestamps()
-  //   t.unique('title')
-  // })
-  console.log('Done: up!')
+    .then(() => {
+      return db.schema.createTable('videos', t => {
+        t.increments('id').primary()
+        t.string('title', 200).notNullable()
+        t.text('description')
+        t.string('link').notNullable()
+        t.integer('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
+        t.integer('status').defaultTo(1)
+        t.timestamps()
+        t.unique('title')
+      })
+    })
+    .then(() => console.log('Done: up!'))
 }
 
 async function down() {
