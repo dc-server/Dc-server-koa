@@ -1,8 +1,9 @@
-const { up, down } = require('./create')
+const { up, down, upPosts } = require('./create')
 const seed = require('./seed')
 
 module.exports = {
   up,
   down,
-  seed
+  seed,
+  upPosts
 }
