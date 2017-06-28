@@ -1,7 +1,7 @@
 const db = require('../src/db')
 
-async function up() {
-  await db.schema.createTable('users', t => {
+function up() {
+  db.schema.createTable('users', t => {
     t.increments('id').primary()
     t.string('username', 100).notNullable()
     t.string('password', 100).notNullable()
@@ -11,16 +11,18 @@ async function up() {
     t.integer('status').defaultTo(1)
     t.unique('username')
   })
-  await db.schema.createTable('posts', t => {
-    t.increments('id').primary()
-    t.string('title', 200).notNullable()
-    t.text('description')
-    t.text('content')
-    t.integer('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
-    t.integer('status').defaultTo(1)
-    t.timestamps()
-    t.unique('title')
-  })
+    .then(() => {
+      return db.schema.createTable('posts', t => {
+        t.increments('id').primary()
+        t.string('title', 200).notNullable()
+        t.text('description')
+        t.text('content')
+        t.integer('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
+        t.integer('status').defaultTo(1)
+        t.timestamps()
+        t.unique('title')
+      })
+    })
   // await db.schema.createTable('videos', t => {
   //   t.increments('id').primary()
   //   t.string('title', 200).notNullable()
