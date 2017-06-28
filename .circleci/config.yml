@@ -39,4 +39,4 @@ jobs:
             PORT: 3000
             NODE_ENV: test
           command: |
-            npm run db
+            npm run db:up

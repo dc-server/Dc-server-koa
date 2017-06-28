@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "autod": "autod",
-    "db": "gulp"
+    "db": "gulp",
+    "db:up": "gulp up"
   },
   "author": "zcong1993 <1005997919@qq.com>",
   "license": "MIT",
