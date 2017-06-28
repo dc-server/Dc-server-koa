@@ -22,9 +22,6 @@ jobs:
               sleep 1
             done
             echo Failed waiting for Mysql && exit 1
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
