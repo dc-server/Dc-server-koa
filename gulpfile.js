@@ -1,9 +1,8 @@
 const gulp = require('gulp')
-const { up, down, seed, upPosts } = require('./db')
+const { up, down, seed } = require('./db')
 
 gulp.task('up', async() => {
   await up()
-  await upPosts()
   process.exit(0)
 })
 
