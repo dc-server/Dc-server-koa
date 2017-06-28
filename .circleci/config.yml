@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/dc-server/dc-server-koa
+    # The primary container is an instance of the first list image listed. Your build commands run in this container.
+    docker:
+      - image: circleci/node:8.0.0
+      # CircleCI Mysql
+      - image: circleci/mysql:latest
+        environment:
+          MYSQL_USER: root
+          MYSQL_DATABASE: dc-server-koa
+    steps:
+      - checkout
+      - run:
+          name: Waiting for Mysql to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Mysql && exit 1
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - .node_modules
+      - run:
+          name: mock db
+          environment:
+            DB_USER: root
+            DB_NAME: dc-server-koa
+            PORT: 3000
+            NODE_ENV: test
+          command: |
+            npm run db
