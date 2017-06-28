@@ -13,7 +13,7 @@ async function up() {
   })
   await db.schema.createTable('posts', t => {
     t.increments('id').primary()
-    t.string('title', 200).notNullable()
+    t.string('title', 100).notNullable()
     t.text('description')
     t.text('content')
     t.integer('author_id').notNullable().unsigned().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
@@ -23,7 +23,7 @@ async function up() {
   })
   await db.schema.createTable('videos', t => {
     t.increments('id').primary()
-    t.string('title', 200).notNullable()
+    t.string('title', 100).notNullable()
     t.text('description')
     t.string('link').notNullable()
     t.integer('author_id').notNullable().unsigned().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
@@ -35,9 +35,9 @@ async function up() {
 }
 
 async function down() {
-  await db.schema.dropTableIfExists('users')
   await db.schema.dropTableIfExists('posts')
   await db.schema.dropTableIfExists('videos')
+  await db.schema.dropTableIfExists('users')
   console.log('Done: down!')
 }
 
