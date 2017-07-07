@@ -1,16 +1,6 @@
 const knex = require('knex')
+const config = require('../knexfile')
 
-const dbConfig = {
-  client: 'mysql',
-  connection: {
-    host : '127.0.0.1',
-    user : process.env.DB_USER,
-    password : process.env.DB_PASSWORD || '',
-    database : process.env.DB_NAME
-  },
-  debug: process.env.NODE_ENV !== 'prod'
-}
+const ENV = process.env.NODE_ENV || 'development'
 
-const db = knex(dbConfig)
-
-module.exports = db
+module.exports = knex(config[ENV])

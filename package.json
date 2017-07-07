@@ -9,8 +9,10 @@
   "scripts": {
     "start": "node index.js",
     "autod": "autod",
-    "db": "gulp",
-    "db:up": "gulp up"
+    "db": "npm run db:down && npm run db:up && npm run db:seed",
+    "db:up": "knex migrate:latest",
+    "db:seed": "knex seed:run",
+    "db:down": "knex migrate:rollback"
   },
   "author": "zcong1993 <1005997919@qq.com>",
   "license": "MIT",
@@ -33,7 +35,6 @@
   },
   "devDependencies": {
     "autod": "^2.8.0",
-    "faker": "^4.1.0",
-    "gulp": "^3.9.1"
+    "faker": "^4.1.0"
   }
 }

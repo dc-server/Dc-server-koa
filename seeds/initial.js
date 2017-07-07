@@ -1,7 +1,6 @@
 const faker = require('faker')
-const db = require('../src/db')
 
-async function seed() {
+exports.seed = async function(db) {
   const users = Array(20).fill().map(() => ({
     username: faker.name.findName(),
     password: faker.internet.password(),
@@ -17,7 +16,7 @@ async function seed() {
       .slice(0, -1).substr(0, 80),
       description: faker.lorem.words(20),
       content: faker.lorem.text(),
-      author_id: users[faker.random.number({ min: 0, max: users.length - 1 })].id
+      author_id: faker.random.number({ min: 1, max: users.length })
     },
     (date => ({ created_at: date, updated_at: date }))(faker.date.past())
   ))
@@ -31,13 +30,11 @@ async function seed() {
       .slice(0, -1).substr(0, 80),
       description: faker.lorem.words(20),
       link: faker.internet.url(),
-      author_id: users[faker.random.number({ min: 0, max: users.length - 1 })].id
+      author_id: faker.random.number({ min: 1, max: users.length })
     },
     (date => ({ created_at: date, updated_at: date }))(faker.date.past())
   ))
   await Promise.all(videos.map(video =>
     db.table('videos').insert(video).returning('id')
   ))
-}
-
-module.exports = seed
+};
