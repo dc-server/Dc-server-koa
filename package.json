@@ -12,7 +12,8 @@
     "db": "npm run db:down && npm run db:up && npm run db:seed",
     "db:up": "knex migrate:latest",
     "db:seed": "knex seed:run",
-    "db:down": "knex migrate:rollback"
+    "db:down": "knex migrate:rollback",
+    "test": "NODE_ENV=test mocha -u bdd"
   },
   "author": "zcong1993 <1005997919@qq.com>",
   "license": "MIT",
@@ -35,6 +36,9 @@
   },
   "devDependencies": {
     "autod": "^2.8.0",
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "mocha": "^3.4.2",
+    "power-assert": "^1.4.4",
+    "supertest": "^3.0.0"
   }
 }

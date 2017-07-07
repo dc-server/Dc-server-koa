@@ -32,10 +32,11 @@ jobs:
           paths:
             - .node_modules
       - run:
-          name: mock db
+          name: mock and test
           environment:
             DATABASE_URL: "mysql://root:@:3306/dc-server-koa"
             PORT: 3000
             NODE_ENV: test
           command: |
             npm run db
+            npm run test
