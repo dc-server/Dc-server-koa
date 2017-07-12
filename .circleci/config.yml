@@ -23,12 +23,12 @@ jobs:
             done
             echo Failed waiting for Mysql && exit 1
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: install dependences
           command: yarn
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
       - run:
