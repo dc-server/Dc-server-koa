@@ -23,14 +23,14 @@ jobs:
             done
             echo Failed waiting for Mysql && exit 1
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: install-npm-wee
-          command: npm install
+          name: install dependences
+          command: yarn
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
-            - .node_modules
+            - ./node_modules
       - run:
           name: mock and test
           environment:
@@ -38,5 +38,5 @@ jobs:
             PORT: 3000
             NODE_ENV: test
           command: |
-            npm run db
-            npm run test
+            yarn db
+            yarn test
