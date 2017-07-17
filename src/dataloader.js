@@ -39,6 +39,12 @@ const video = new Dataloader(ids => db.table('videos')
   .then(mapTo(ids, x => x.id, 'Video'))
 )
 
+const img = new Dataloader(ids => db.table('imgs')
+  .whereIn('id', ids)
+  .select('*')
+  .then(mapTo(ids, x => x.id, 'Img'))
+)
+
 const userPosts = new Dataloader(ids => db.table('posts')
   .whereIn('author_id', ids)
   .select('*')
@@ -51,10 +57,18 @@ const userVideos = new Dataloader(ids => db.table('videos')
   .then(mapToMany(ids, x => x.author_id, 'Video'))
 )
 
+const userImgs = new Dataloader(ids => db.table('imgs')
+  .whereIn('author_id', ids)
+  .select('*')
+  .then(mapToMany(ids, x => x.author_id, 'Img'))
+)
+
 module.exports = {
   user,
   post,
   video,
+  img,
   userPosts,
-  userVideos
+  userVideos,
+  userImgs
 }

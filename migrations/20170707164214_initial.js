@@ -30,10 +30,20 @@ exports.up = async function(db) {
     t.timestamps()
     t.unique('title')
   })
+  await db.schema.createTable('imgs', t => {
+    t.increments('id').primary()
+    t.string('name', 100).notNullable()
+    t.text('description')
+    t.string('link').notNullable()
+    t.integer('author_id').notNullable().unsigned().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE')
+    t.integer('status').defaultTo(1)
+    t.timestamps()
+  })
 };
 
 exports.down = async function(db) {
   await db.schema.dropTableIfExists('posts')
   await db.schema.dropTableIfExists('videos')
+  await db.schema.dropTableIfExists('imgs')
   await db.schema.dropTableIfExists('users')
 };

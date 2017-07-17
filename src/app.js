@@ -6,7 +6,7 @@ const cors = require('kcors')
 const Router = require('koa-router')
 const { graphqlKoa, graphiqlKoa } = require('graphql-server-koa')
 const schema = require('./schema')
-const { user, post, video, userPosts, userVideos } = require('./dataloader')
+const { user, post, video, img, userPosts, userVideos, userImgs } = require('./dataloader')
 
 const ENV = process.env.NODE_ENV
 const app = new Koa()
@@ -24,8 +24,10 @@ router.post('/graphql', graphqlKoa({
     user,
     post,
     video,
+    img,
     userPosts,
-    userVideos
+    userVideos,
+    userImgs
   }
 }))
 

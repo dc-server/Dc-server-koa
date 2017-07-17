@@ -37,4 +37,18 @@ exports.seed = async function(db) {
   await Promise.all(videos.map(video =>
     db.table('videos').insert(video).returning('id')
   ))
+
+  const imgs = Array(100).fill().map(() => Object.assign(
+    {
+      name: faker.lorem.sentence(faker.random.number({ min: 4, max: 7 }))
+      .slice(0, -1).substr(0, 80),
+      description: faker.lorem.words(20),
+      link: faker.internet.url(),
+      author_id: faker.random.number({ min: 1, max: users.length })
+    },
+    (date => ({ created_at: date, updated_at: date }))(faker.date.past())
+  ))
+  await Promise.all(imgs.map(img =>
+    db.table('imgs').insert(img).returning('id')
+  ))
 };

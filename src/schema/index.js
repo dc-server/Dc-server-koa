@@ -5,6 +5,7 @@ const { hash, compare } =  require('../utils')
 const { userSchema } = require('./user')
 const { postSchema, postResolvers } = require('./post')
 const { videoSchema, videoResolvers } = require('./video')
+const { imgSchema, imgResolvers } = require('./img')
 
 const rootSchema = [`
 type Query {
@@ -15,13 +16,18 @@ type Query {
   video(id: Int!): Video
   videos(limit: Int, offset: Int): [Video]
   videosCount: Int!
+  img(id: Int!): Img
+  imgs(limit: Int, offset: Int): [Img]
+  imgsCount: Int!
   userPosts(id: Int!): [Post]
   userVideos(id: Int!): [Video]
+  userImgs(id: Int!): [Img]
 }
 
 type Mutation {
   register(username: String!, password: String!, email: String): User
   login(username: String!, password: String!): User
+  uploadImg(userId: Int!, name: String!, description: String, img: Upload!): Img!
 }
 `]
 
@@ -30,6 +36,7 @@ const rootResolvers = {
     user: (_, { id }, { user }) => user.load(id),
     post: (_, { id }, { post }) => post.load(id),
     video: (_, { id }, { video }) => video.load(id),
+    img: (_, { id }, { img }) => img.load(id),
     posts: (_, { limit, offset }) => {
       const off = offset || 1
       const li = limit || 5
@@ -46,6 +53,14 @@ const rootResolvers = {
         .limit(limit)
         .offset(offset)
     },
+    imgs: (_, { limit, offset }) => {
+      const off = offset || 1
+      const li = limit || 5
+      return db.table('imgs')
+        .orderBy('created_at', 'desc')
+        .limit(limit)
+        .offset(offset)
+    },
     postsCount: () => {
       return db.table('posts')
         .count()
@@ -56,8 +71,14 @@ const rootResolvers = {
         .count()
         .then(x => x[0]['count(*)'])
     },
+    imgsCount: () => {
+      return db.table('imgs')
+        .count()
+        .then(x => x[0]['count(*)'])
+    },
     userPosts: (_, { id }, { userPosts }) => userPosts.load(id),
-    userVideos: (_, { id }, { userVideos }) => userVideos.load(id)
+    userVideos: (_, { id }, { userVideos }) => userVideos.load(id),
+    userImgs: (_, { id }, { userImgs }) => userImgs.load(id)
   },
   Mutation: {
     register: async(_, args, { user }) => {
@@ -88,12 +109,17 @@ const rootResolvers = {
         throw new Error(`password not match!`)
       }
       return user[0]
+    },
+    uploadImg: async(_, { userId, name, description, img }, ctx) => {
+      const imgLoader = ctx.img
+      console.log(userId, name, description, img)
+      return imgLoader.load(1)
     }
   }
 }
 
-const schema = [...rootSchema, ...userSchema, ...postSchema, ...videoSchema]
-const resolvers = Object.assign({}, rootResolvers, postResolvers, videoResolvers)
+const schema = [...rootSchema, ...userSchema, ...postSchema, ...videoSchema, ...imgSchema]
+const resolvers = Object.assign({}, rootResolvers, postResolvers, videoResolvers, imgResolvers)
 
 module.exports = makeExecutableSchema({
   typeDefs: schema,
