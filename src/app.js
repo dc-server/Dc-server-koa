@@ -22,26 +22,19 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use(static('static'))
 
-// app.use(bodyParser({
-//   enableTypes: ['json', 'text', 'form'],
-//   extendTypes: {
-//     text: ['application/graphql']
-//   }
-// }))
+app.use(bodyParser({
+  enableTypes: ['json', 'text', 'form'],
+  extendTypes: {
+    text: ['application/graphql'],
+    json: ['application/json']
+  }
+}))
 
 const mws = [
-  bodyParser({
-    enableTypes: ['json', 'text', 'form'],
-    extendTypes: {
-      text: ['application/graphql'],
-      json: ['application/json']
-    }
-  }),
   async (ctx, next) => {
     if (ctx.request.is('application/graphql')) {
       ctx.request.body = { query: ctx.request.body }
     }
-    console.log(ctx.request.body)
     await next()
   },
   apolloUploadKoa({
