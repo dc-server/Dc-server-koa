@@ -2,20 +2,21 @@ const supertest = require('supertest')
 const assert = require('power-assert')
 
 const app = require('../src/app')
+
 const request = supertest(app.listen())
 
 describe('Graphql test', () => {
   it('should get user', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   user(id: 1) {
     id
     username
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -29,7 +30,7 @@ describe('Graphql test', () => {
   it('should get post', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   post(id: 1) {
     id
@@ -42,7 +43,7 @@ describe('Graphql test', () => {
     }
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -58,7 +59,7 @@ describe('Graphql test', () => {
   it('should get video', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   video(id: 1) {
     id
@@ -71,7 +72,7 @@ describe('Graphql test', () => {
     }
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -87,11 +88,11 @@ describe('Graphql test', () => {
   it('should get correct postsCount', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   postsCount
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -102,11 +103,11 @@ describe('Graphql test', () => {
   it('should get correct videosCount', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   videosCount
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -117,13 +118,13 @@ describe('Graphql test', () => {
   it('should get posts', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   posts(limit: 10, offset: 20) {
     id
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -135,13 +136,13 @@ describe('Graphql test', () => {
   it('should get videos', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   videos(limit: 10, offset: 20) {
     id
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -153,14 +154,14 @@ describe('Graphql test', () => {
   it('should get user\'s posts', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   userPosts(id: 1) {
     id
     author_id
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -174,14 +175,14 @@ describe('Graphql test', () => {
   it('should get user\'s videos', async () => {
     const res = await request
       .post('/graphql')
-      .send({query: `
+      .send({ query: `
 {
   userVideos(id: 1) {
     id
     author_id
   }
 }
-      `})
+      ` })
       .set('Accept', 'application/json')
       .expect(200)
 
@@ -191,5 +192,4 @@ describe('Graphql test', () => {
       assert.equal(video.author_id, 1, `the video ${index} should belong to user 1`)
     })
   })
-
 })

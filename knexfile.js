@@ -6,7 +6,7 @@ module.exports = {
     client: 'mysql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      tableName: 'migrations',
+      tableName: 'migrations'
     }
   },
 
@@ -14,7 +14,7 @@ module.exports = {
     client: 'mysql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      tableName: 'migrations',
+      tableName: 'migrations'
     }
   },
 
@@ -22,7 +22,7 @@ module.exports = {
     client: 'mysql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      tableName: 'migrations',
+      tableName: 'migrations'
     }
   },
 
@@ -30,8 +30,8 @@ module.exports = {
     client: 'mysql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      tableName: 'migrations',
+      tableName: 'migrations'
     }
-  },
+  }
 
 }

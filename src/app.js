@@ -4,7 +4,7 @@ const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const cors = require('kcors')
 const Router = require('koa-router')
-const static = require('koa-static')
+const serve = require('koa-static')
 const { graphqlKoa, graphiqlKoa } = require('graphql-server-koa')
 const { apolloUploadKoa } = require('apollo-upload-server')
 const schema = require('./schema')
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(logger())
 }
 
-app.use(static('static'))
+app.use(serve('static'))
 
 app.use(bodyParser({
   enableTypes: ['json', 'text', 'form'],

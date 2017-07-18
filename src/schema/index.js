@@ -1,7 +1,7 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const isLength = require('validator/lib/isLength')
 const db = require('../db')
-const { hash, compare } =  require('../utils')
+const { hash, compare } = require('../utils')
 const { userSchema } = require('./user')
 const { postSchema, postResolvers } = require('./post')
 const { videoSchema, videoResolvers } = require('./video')
@@ -38,28 +38,28 @@ const rootResolvers = {
     video: (_, { id }, { video }) => video.load(id),
     img: (_, { id }, { img }) => img.load(id),
     posts: (_, { limit, offset }) => {
-      const off = offset || 1
+      const off = offset || 0
       const li = limit || 5
       return db.table('posts')
         .orderBy('created_at', 'desc')
-        .limit(limit)
-        .offset(offset)
+        .limit(li)
+        .offset(off)
     },
     videos: (_, { limit, offset }) => {
-      const off = offset || 1
+      const off = offset || 0
       const li = limit || 5
       return db.table('videos')
         .orderBy('created_at', 'desc')
-        .limit(limit)
-        .offset(offset)
+        .limit(li)
+        .offset(off)
     },
     imgs: (_, { limit, offset }) => {
-      const off = offset || 1
+      const off = offset || 0
       const li = limit || 5
       return db.table('imgs')
         .orderBy('created_at', 'desc')
-        .limit(limit)
-        .offset(offset)
+        .limit(li)
+        .offset(off)
     },
     postsCount: () => {
       return db.table('posts')
@@ -81,12 +81,12 @@ const rootResolvers = {
     userImgs: (_, { id }, { userImgs }) => userImgs.load(id)
   },
   Mutation: {
-    register: async(_, args, { user }) => {
+    register: async (_, args, { user }) => {
       const { username, password } = args
-      if (!isLength(username, { min: 4, max: 20 })){
+      if (!isLength(username, { min: 4, max: 20 })) {
         throw new Error(`username's length should in 4 ~ 20`)
       }
-      if (!isLength(password, { min: 6, max: 20 })){
+      if (!isLength(password, { min: 6, max: 20 })) {
         throw new Error(`password's length should in 6 ~ 20`)
       }
       try {
@@ -97,7 +97,7 @@ const rootResolvers = {
       const id = await db.table('users').insert(args).returning('id')
       return user.load(id[0])
     },
-    login: async(_, { username, password }) => {
+    login: async (_, { username, password }) => {
       const user = await db.table('users')
         .where('username', username)
         .select('*')
@@ -110,7 +110,7 @@ const rootResolvers = {
       }
       return user[0]
     },
-    uploadImg: async(_, { userId, name, description, img }, ctx) => {
+    uploadImg: async (_, { userId, name, description, img }, ctx) => {
       const imgLoader = ctx.img
       console.log(userId, name, description, img)
       return imgLoader.load(1)

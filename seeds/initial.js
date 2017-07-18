@@ -1,6 +1,6 @@
 const faker = require('faker')
 
-exports.seed = async function(db) {
+exports.seed = async function (db) {
   const users = Array(20).fill().map(() => ({
     username: faker.name.findName(),
     password: faker.internet.password(),
@@ -51,4 +51,4 @@ exports.seed = async function(db) {
   await Promise.all(imgs.map(img =>
     db.table('imgs').insert(img).returning('id')
   ))
-};
+}

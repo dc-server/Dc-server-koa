@@ -1,5 +1,5 @@
 
-exports.up = async function(db) {
+exports.up = async function (db) {
   await db.schema.createTable('users', t => {
     t.increments('id').primary()
     t.string('username', 100).notNullable()
@@ -39,11 +39,11 @@ exports.up = async function(db) {
     t.integer('status').defaultTo(1)
     t.timestamps()
   })
-};
+}
 
-exports.down = async function(db) {
+exports.down = async function (db) {
   await db.schema.dropTableIfExists('posts')
   await db.schema.dropTableIfExists('videos')
   await db.schema.dropTableIfExists('imgs')
   await db.schema.dropTableIfExists('users')
-};
+}
