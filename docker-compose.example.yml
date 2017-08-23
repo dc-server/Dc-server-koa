@@ -3,7 +3,7 @@ version: '2'
 services:
 
   app:
-    image: test:latest
+    image: zcong/dc-server-koa:latest
     links:
       - mysql
     environment:
