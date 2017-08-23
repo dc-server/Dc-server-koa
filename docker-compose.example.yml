@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -23,3 +23,5 @@ services:
       - MYSQL_PASSWORD=root
       - MYSQL_ROOT_PASSWORD=root
       - TZ=Asia/Shanghai
+    volumes:
+      - ./mysql-boot.sh:/docker-entrypoint-initdb.d/initdb.sh
