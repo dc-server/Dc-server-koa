@@ -19,7 +19,7 @@ services:
     image: mysql:latest
     environment:
       - MYSQL_DATABASE=koa
-      - MYSQL_USER=root
+      - MYSQL_USER=docker
       - MYSQL_PASSWORD=root
       - MYSQL_ROOT_PASSWORD=root
       - TZ=Asia/Shanghai
